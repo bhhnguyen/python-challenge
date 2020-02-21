@@ -1,9 +1,12 @@
 import os
 import csv
 
+
+#filepath
 budget_csv = os.path.join("Resources", "budget_data.csv")
 
 with open(budget_csv, 'r') as csvfile:
+    #initialize
     csvreader = csv.reader(csvfile,delimiter=",")
     header = next(csvreader)
     count = 0
@@ -15,11 +18,14 @@ with open(budget_csv, 'r') as csvfile:
     increaseMonth = ""
     decreaseMonth = ""
     started = False
+    #iterate
     for row in csvreader:
         totalMonths = totalMonths + 1
         newAmount = int(row[1])
         total = total + newAmount
+        #if this is the first row, don't worry about deltas
         if started:
+            #calculate change
             delta = newAmount - oldAmount
             totalDelta = totalDelta + delta
             if delta > increase:
@@ -29,8 +35,11 @@ with open(budget_csv, 'r') as csvfile:
                 decrease = delta
                 decreaseMonth = row[0]
         else:
+            #set started to True to start calcuating deltas
             started = True
+        #keep track of previous amount for delta calculations
         oldAmount = newAmount
+    #write a file
     with open("analysis_results.txt","w") as textfile:
         textfile.write("Financial Analysis\n")
         textfile.write("----------------------------\n")
@@ -40,6 +49,7 @@ with open(budget_csv, 'r') as csvfile:
         textfile.write(f"Greatest Increase in Profits: {increaseMonth} (${increase})\n")
         textfile.write(f"Greatest Decrease in Profits: {decreaseMonth} (${decrease})\n")
         textfile.write("----------------------------")
+    #print out to terminal
     print("Financial Analysis")
     print("----------------------------")
     print(f"Total months: {totalMonths}")
