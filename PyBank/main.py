@@ -9,7 +9,6 @@ with open(budget_csv, 'r') as csvfile:
     #initialize
     csvreader = csv.reader(csvfile,delimiter=",")
     header = next(csvreader)
-    count = 0
     totalMonths = 0
     total = 0
     totalDelta = 0
