@@ -12,8 +12,6 @@ with open(budget_csv, 'r') as csvfile:
     totalMonths = 0
     total = 0
     totalDelta = 0
-    increase = 0
-    decrease = 0
     increaseMonth = ""
     decreaseMonth = ""
     started = False
@@ -27,6 +25,12 @@ with open(budget_csv, 'r') as csvfile:
             #calculate change
             delta = newAmount - oldAmount
             totalDelta = totalDelta + delta
+            if increase is None:
+            	increase = delta
+            	increaseMonth = row[0]
+            if decrease is None:
+            	decrease = delta
+            	decreaseMonth = row[0]
             if delta > increase:
                 increase = delta
                 increaseMonth = row[0]
@@ -34,8 +38,10 @@ with open(budget_csv, 'r') as csvfile:
                 decrease = delta
                 decreaseMonth = row[0]
         else:
-            #set started to True to start calcuating deltas
+            #set started to True to start calcuating deltas, initialize increase/decrease to be None
             started = True
+            increase = None
+            decrease = None
         #keep track of previous amount for delta calculations
         oldAmount = newAmount
     #write a file
